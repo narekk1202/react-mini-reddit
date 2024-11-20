@@ -3,6 +3,7 @@ import PrivateRoute from '../components/shared/private-route';
 import Urls from '../constants/Urls';
 import RootLayout from '../layout';
 import Home from '../pages/home';
+import Post from '../pages/post';
 import SignIn from '../pages/sign-in';
 import SignUp from '../pages/sign-up';
 
@@ -23,6 +24,14 @@ export const router = createBrowserRouter([
 				element: (
 					<PrivateRoute>
 						<Home />
+					</PrivateRoute>
+				),
+			},
+			{
+				path: Urls.post,
+				element: (
+					<PrivateRoute>
+						<Post />
 					</PrivateRoute>
 				),
 			},

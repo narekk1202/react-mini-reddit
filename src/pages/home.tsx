@@ -3,7 +3,7 @@ import { Spinner, useDisclosure } from '@nextui-org/react';
 import { RiPlayListAddFill } from 'react-icons/ri';
 import { TablesInsert } from '../../database.types';
 import CreatePostModal from '../components/shared/modals/create-post-modal';
-import Post from '../components/shared/post';
+import PostCard from '../components/shared/post-card';
 import { useAuth } from '../providers/auth-provider';
 import { CreatePostValidation } from '../schemas/posts.schema';
 import { useCreatePostMutation } from '../services/mutations/posts.mutations';
@@ -44,7 +44,7 @@ const Home = () => {
 				{isLoading ? (
 					<Spinner color='primary' size='lg' />
 				) : posts && posts.length > 0 ? (
-					posts.map(post => <Post key={post.id} {...post} />)
+					posts.map(post => <PostCard key={post.id} {...post} />)
 				) : (
 					<span className='text-2xl font-medium'>
 						No posts found, create one 😊

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { Tables } from '../../../database.types';
 import QueryKeys from '../../constants/QueryKeys';
 import ServerErrors from '../../constants/ServerErrors';
 import { useAuth } from '../../providers/auth-provider';
@@ -17,12 +18,23 @@ export const usePostQuery = (postId: string, enabled: boolean) => {
 			const { data, error } = await supabase.from('posts').select('*').match({
 				id: postId,
 			});
+			const { data: user, error: userError } = await supabase
+				.from('profiles')
+				.select('*')
+				.match({
+					id: data?.[0].user_id,
+				});
 
-			if (error) {
+			if (error || userError) {
 				throw error;
 			}
 
-			return data[0];
+			if (data && user) {
+				const userData = user[0] as Tables<'profiles'>;
+				return { ...data[0], user: userData } as IPost;
+			}
+
+			return {} as IPost
 		},
 		enabled,
 	});

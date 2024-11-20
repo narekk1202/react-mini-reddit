@@ -150,7 +150,7 @@ const EditPostModal: FC<Props> = ({
 								type='submit'
 								color='primary'
 							>
-								Create
+								Edit
 							</Button>
 						</ModalFooter>
 					</form>

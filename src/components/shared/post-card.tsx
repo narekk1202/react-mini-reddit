@@ -1,11 +1,14 @@
 import { Button } from '@nextui-org/button';
 import { useDisclosure, User } from '@nextui-org/react';
 import { FC } from 'react';
+import { FaRegComments } from 'react-icons/fa';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { SlDislike, SlLike } from 'react-icons/sl';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Keywords from '../../constants/Keywords';
+import Urls from '../../constants/Urls';
 import { useAuth } from '../../providers/auth-provider';
 import { CreatePostValidation } from '../../schemas/posts.schema';
 import {
@@ -22,7 +25,7 @@ import { IPost } from '../../types/post.types';
 import EditPostModal from './modals/edit-post-modal';
 import YouSureModal from './modals/you-sure-modal';
 
-const Post: FC<IPost> = ({ id, title, description, images, user }) => {
+const PostCard: FC<IPost> = ({ id, title, description, images, user }) => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const {
 		isOpen: isOpenEdit,
@@ -38,6 +41,9 @@ const Post: FC<IPost> = ({ id, title, description, images, user }) => {
 	const { mutate: deletePost, isPending } = useDeletePostMutation(onOpenChange);
 	const { mutate: updatePost, isPending: isPendingUpdate } =
 		useUpdatePostMutation(onOpenChangeEdit);
+
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	const handleLike = () => {
 		if (userReaction === Keywords.like) {
@@ -74,7 +80,7 @@ const Post: FC<IPost> = ({ id, title, description, images, user }) => {
 					{description && (
 						<p className='text-sm text-gray-500'>{description}</p>
 					)}
-					<div className='w-full mt-3 flex flex-wrap  gap-3'>
+					<div className='w-full mt-3 flex flex-wrap gap-3'>
 						<PhotoProvider>
 							{images?.map(imageUrl => (
 								<PhotoView
@@ -105,6 +111,14 @@ const Post: FC<IPost> = ({ id, title, description, images, user }) => {
 					>
 						<SlDislike className='size-5' /> {reactions?.dislikes || 0}
 					</Button>
+					{location.pathname === Urls.home && (
+						<Button
+							onClick={() => navigate(Urls.post.replace(':id', id))}
+							variant='light'
+						>
+							<FaRegComments className='size-5 text-slate-500' />
+						</Button>
+					)}
 					{currentUser?.id === user.id && (
 						<Button onClick={onOpen} variant='light' color='danger'>
 							<MdDelete className='size-5' /> Delete
@@ -137,4 +151,4 @@ const Post: FC<IPost> = ({ id, title, description, images, user }) => {
 	);
 };
 
-export default Post;
+export default PostCard;
