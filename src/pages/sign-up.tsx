@@ -63,14 +63,6 @@ const SignUp = () => {
 						size='sm'
 					/>
 					<Input
-						{...register('username')}
-						isInvalid={!!errors.username}
-						errorMessage={errors.username?.message}
-						type='text'
-						label='Username'
-						size='sm'
-					/>
-					<Input
 						{...register('email')}
 						isInvalid={!!errors.email}
 						errorMessage={errors.email?.message}

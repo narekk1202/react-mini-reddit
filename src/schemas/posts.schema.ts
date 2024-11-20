@@ -5,7 +5,7 @@ export const createPostValidation = z.object({
 	description: z
 		.string()
 		.min(10, { message: 'Description must be at least 10 characters' }),
-	images: z.array(z.string()).optional(),
+	images: z.array(z.string().url({ message: 'Invalid image URL' })).optional(),
 });
 
 export type CreatePostValidation = z.infer<typeof createPostValidation>;

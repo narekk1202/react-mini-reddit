@@ -14,9 +14,9 @@ import { useForm } from 'react-hook-form';
 import { BiX } from 'react-icons/bi';
 import { ImImage } from 'react-icons/im';
 import {
-	createPostValidation,
 	CreatePostValidation,
-} from '../../schemas/posts.schema';
+	createPostValidation,
+} from '../../../schemas/posts.schema';
 
 interface Props {
 	isOpen: boolean;
@@ -36,18 +36,13 @@ const CreatePostModal: FC<Props> = ({
 		register,
 		handleSubmit,
 		formState: { errors },
-		setFocus,
 		reset,
 	} = useForm<CreatePostValidation>({
 		resolver: zodResolver(createPostValidation),
 	});
 
 	const handleAddImage = () => {
-		const lastInput = imageInputs[imageInputs.length - 1];
-		setFocus(`images.${imageInputs.length - 1}`);
-		if (lastInput !== '') {
-			setImageInputs([...imageInputs, '']);
-		}
+		setImageInputs([...imageInputs, '']);
 	};
 
 	const handleOnSubmitModified = (data: CreatePostValidation) => {
@@ -81,26 +76,30 @@ const CreatePostModal: FC<Props> = ({
 								size='sm'
 								isRequired
 							/>
-							{imageInputs.map((_, index) => (
-								<div key={index} className='flex items-center gap-2'>
-									<Input
-										{...register(`images.${index}`)}
-										label={`Image URL ${index + 1}`}
-										isInvalid={!!errors.images?.[index]}
-										errorMessage={errors.images?.[index]?.message}
-										size='sm'
-									/>
-									<Button
-										isIconOnly
-										color='danger'
-										onPress={() => {
-											setImageInputs(imageInputs.filter((_, i) => i !== index));
-										}}
-									>
-										<BiX />
-									</Button>
-								</div>
-							))}
+							{imageInputs.length > 0 &&
+								imageInputs.map((_, index) => (
+									<div key={index} className='flex items-start gap-2'>
+										<Input
+											{...register(`images.${index}`)}
+											label={`Image URL ${index + 1}`}
+											isInvalid={!!errors.images?.[index]}
+											errorMessage={errors.images?.[index]?.message}
+											size='sm'
+										/>
+										<Button
+											isIconOnly
+											size='lg'
+											color='danger'
+											onPress={() => {
+												setImageInputs(
+													imageInputs.filter((_, i) => i !== index)
+												);
+											}}
+										>
+											<BiX />
+										</Button>
+									</div>
+								))}
 							<Button onClick={handleAddImage} color='primary'>
 								<ImImage />
 								Add image

@@ -82,3 +82,49 @@ export const useRemovePostReactionMutation = (postId: string) => {
 		},
 	});
 };
+
+export const useDeletePostMutation = (
+	onOpenChange: (isOpen: boolean) => void
+) => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (postId: string) =>
+			supabase.from('posts').delete().match({
+				id: postId,
+			}),
+		onSuccess: data => {
+			if (data.error) {
+				toast.error(data.error.message);
+				return;
+			}
+
+			queryClient.invalidateQueries({ queryKey: [QueryKeys.posts] });
+			toast.success('Successfully deleted post');
+			onOpenChange(false);
+		},
+	});
+};
+
+export const useUpdatePostMutation = (
+	onOpenChange: (isOpen: boolean) => void
+) => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (data: TablesInsert<'posts'>) =>
+			supabase.from('posts').update(data).match({
+				id: data.id,
+			}),
+		onSuccess: data => {
+			if (data.error) {
+				toast.error(data.error.message);
+				return;
+			}
+
+			queryClient.invalidateQueries({ queryKey: [QueryKeys.posts] });
+			toast.success('Successfully updated post');
+			onOpenChange(false);
+		},
+	});
+};

@@ -5,6 +5,29 @@ import { useAuth } from '../../providers/auth-provider';
 import { IPost } from '../../types/post.types';
 import supabase from '../../utils/supabase';
 
+interface Reactions {
+	likes: number;
+	dislikes: number;
+}
+
+export const usePostQuery = (postId: string, enabled: boolean) => {
+	return useQuery({
+		queryKey: [QueryKeys.post, postId],
+		queryFn: async () => {
+			const { data, error } = await supabase.from('posts').select('*').match({
+				id: postId,
+			});
+
+			if (error) {
+				throw error;
+			}
+
+			return data[0];
+		},
+		enabled,
+	});
+};
+
 export const usePostsQuery = () => {
 	return useQuery({
 		queryKey: [QueryKeys.posts],
@@ -29,11 +52,6 @@ export const usePostsQuery = () => {
 		},
 	});
 };
-
-interface Reactions {
-	likes: number;
-	dislikes: number;
-}
 
 export const usePostReactions = (postId: string) => {
 	return useQuery({

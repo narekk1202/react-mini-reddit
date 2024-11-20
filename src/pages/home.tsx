@@ -2,7 +2,7 @@ import { Button } from '@nextui-org/button';
 import { Spinner, useDisclosure } from '@nextui-org/react';
 import { RiPlayListAddFill } from 'react-icons/ri';
 import { TablesInsert } from '../../database.types';
-import CreatePostModal from '../components/shared/create-post-modal';
+import CreatePostModal from '../components/shared/modals/create-post-modal';
 import Post from '../components/shared/post';
 import { useAuth } from '../providers/auth-provider';
 import { CreatePostValidation } from '../schemas/posts.schema';

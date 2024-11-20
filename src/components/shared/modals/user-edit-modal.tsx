@@ -9,12 +9,12 @@ import {
 } from '@nextui-org/react';
 import { FC, useEffect, useState } from 'react';
 import { ImageListType } from 'react-images-uploading';
-import { useAuth } from '../../providers/auth-provider';
-import { useUpdateUserMutation } from '../../services/mutations/user.mutations';
-import { useAuthMeQuery } from '../../services/queries/user.queries';
-import { IUpdateUser } from '../../types/user.types';
-import { checkImageAvailability } from '../../utils/check-url';
-import ImageUpload from './image-upload';
+import { useAuth } from '../../../providers/auth-provider'
+import { useUpdateUserMutation } from '../../../services/mutations/user.mutations'
+import { useAuthMeQuery } from '../../../services/queries/user.queries'
+import { IUpdateUser } from '../../../types/user.types'
+import { checkImageAvailability } from '../../../utils/check-url'
+import ImageUpload from '../image-upload'
 
 interface Props {
 	isOpen: boolean;

@@ -7,8 +7,8 @@ import Urls from '../../constants/Urls';
 import { useAuth } from '../../providers/auth-provider';
 import { useAuthMeQuery } from '../../services/queries/user.queries';
 import { checkImageAvailability } from '../../utils/check-url';
-import LogoutModal from './logout-modal';
-import UserEditModal from './user-edit-modal';
+import YouSureModal from './modals/you-sure-modal';
+import UserEditModal from './modals/user-edit-modal';
 
 const Header = () => {
 	const { user: currentUser } = useAuth();
@@ -19,6 +19,7 @@ const Header = () => {
 		onOpen: onLogoutOpen,
 		onOpenChange: onLogoutOpenChange,
 	} = useDisclosure();
+	const { signOut } = useAuth();
 
 	const [isImageAvailable, setIsImageAvailable] = useState(false);
 
@@ -69,7 +70,14 @@ const Header = () => {
 				</div>
 			</header>
 			<UserEditModal isOpen={isOpen} onOpenChange={onOpenChange} />
-			<LogoutModal isOpen={isLogoutOpen} onOpenChange={onLogoutOpenChange} />
+			<YouSureModal
+				title='Sign Out'
+				buttonValue='Sign Out'
+				body='Are you sure you want to sign out?'
+				onClick={signOut}
+				isOpen={isLogoutOpen}
+				onOpenChange={onLogoutOpenChange}
+			/>
 		</>
 	);
 };
