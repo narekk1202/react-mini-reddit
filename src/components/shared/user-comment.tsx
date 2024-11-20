@@ -19,7 +19,7 @@ const UserComment: FC<Props> = ({ comment }) => {
 				<Spinner size='sm' />
 			) : (
 				<User
-					name={author?.username}
+					name={author?.username || author?.full_name}
 					avatarProps={{ src: author?.avatar_url || '' }}
 				/>
 			)}
