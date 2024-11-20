@@ -20,7 +20,10 @@ const Home = () => {
 		const sendData: TablesInsert<'posts'> = {
 			created_at: new Date().toISOString(),
 			description: data.description,
-			images: data.images || null,
+			images:
+				data.images && data.images?.length > 0
+					? data.images?.filter(val => val !== '')
+					: null,
 			title: data.title,
 			user_id: user?.id as string,
 		};
@@ -28,7 +31,7 @@ const Home = () => {
 	};
 
 	return (
-		<main className='w-full min-h-screen flex flex-col items-center p-5 mt-16'>
+		<main className='w-full min-h-screen flex flex-col items-center p-5 mt-20'>
 			<div className='w-full flex justify-between items-center'>
 				<p className='font-semibold text-3xl'>Posts</p>
 
@@ -40,8 +43,12 @@ const Home = () => {
 			<div className='w-full flex flex-col items-center mt-5 gap-5'>
 				{isLoading ? (
 					<Spinner color='primary' size='lg' />
+				) : posts && posts.length > 0 ? (
+					posts.map(post => <Post key={post.id} {...post} />)
 				) : (
-					posts?.map(post => <Post key={post.id} {...post} />)
+					<span className='text-2xl font-medium'>
+						No posts found, create one 😊
+					</span>
 				)}
 			</div>
 

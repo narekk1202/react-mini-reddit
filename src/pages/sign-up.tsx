@@ -1,9 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
+import { Image } from '@nextui-org/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import { FcGoogle } from 'react-icons/fc';
 import { Link, Navigate } from 'react-router-dom';
 import Keywords from '../constants/Keywords';
 import Urls from '../constants/Urls';
@@ -45,7 +47,11 @@ const SignUp = () => {
 		<main className='container-main flex-col'>
 			<span className='text-3xl font-semibold mb-4'>Sign Up</span>
 			<form onSubmit={handleSubmit(onSubmit)} className='auth-container'>
-				<img className='size-16' src='/logo.png' alt='logo' />
+				<Image
+					className='size-20 bg-white rounded-full'
+					src='/logo.png'
+					alt='logo'
+				/>
 
 				<div className='w-full flex flex-col gap-2 items-center mt-5'>
 					<Input
@@ -96,7 +102,7 @@ const SignUp = () => {
 					variant='bordered'
 					className='w-full mt-3'
 				>
-					<img src='/google.png' alt='google' className='size-5' />
+					<FcGoogle className='size-5' />
 					Google
 				</Button>
 

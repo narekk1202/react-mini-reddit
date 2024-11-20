@@ -52,6 +52,7 @@ const CreatePostModal: FC<Props> = ({
 	const handleOnSubmitModified = (data: CreatePostValidation) => {
 		handleOnSubmit(data);
 		reset();
+		setImageInputs([]);
 	};
 
 	return (
@@ -79,7 +80,7 @@ const CreatePostModal: FC<Props> = ({
 								size='sm'
 								isRequired
 							/>
-							{imageInputs.map((input, index) => (
+							{imageInputs.map((_, index) => (
 								<div key={index} className='flex items-center gap-2'>
 									<Input
 										{...register(`images.${index}`)}
@@ -87,12 +88,6 @@ const CreatePostModal: FC<Props> = ({
 										isInvalid={!!errors.images?.[index]}
 										errorMessage={errors.images?.[index]?.message}
 										size='sm'
-										value={input}
-										onChange={e => {
-											const newImageInputs = [...imageInputs];
-											newImageInputs[index] = e.target.value;
-											setImageInputs(newImageInputs);
-										}}
 									/>
 									<Button
 										isIconOnly

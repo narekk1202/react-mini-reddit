@@ -1,4 +1,4 @@
-import { Button, Spinner, useDisclosure, User } from '@nextui-org/react';
+import { Button, Image, Spinner, useDisclosure, User } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import { CiSettings } from 'react-icons/ci';
 import { LuLogOut } from 'react-icons/lu';
@@ -37,8 +37,8 @@ const Header = () => {
 		<>
 			<header className='w-full h-auto flex items-center justify-between fixed top-0 z-[50] border-b p-3 bg-white'>
 				<Link to={Urls.home} className='w-auto h-auto flex items-center gap-2'>
-					<img className='size-10' src='/logo.png' alt='logo' />
-					<span className='font-semibold text-xl'>TwitterC</span>
+					<Image className='size-16' src='/logo.png' alt='logo' />
+					<span className='font-semibold text-xl'>RedditC</span>
 				</Link>
 
 				<div className='w-auto flex items-center gap-3'>
