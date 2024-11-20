@@ -17,7 +17,6 @@ export const useSignUpMutation = () => {
 				options: {
 					data: {
 						full_name: data.fullName,
-						username: data.username,
 					},
 				},
 			}),
