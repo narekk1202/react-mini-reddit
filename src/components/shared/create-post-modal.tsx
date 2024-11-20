@@ -7,6 +7,7 @@ import {
 	ModalContent,
 	ModalFooter,
 	ModalHeader,
+	Textarea,
 } from '@nextui-org/react';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -72,7 +73,7 @@ const CreatePostModal: FC<Props> = ({
 								size='sm'
 								isRequired
 							/>
-							<Input
+							<Textarea
 								{...register('description')}
 								isInvalid={!!errors.description}
 								errorMessage={errors.description?.message}

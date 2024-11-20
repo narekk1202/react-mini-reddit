@@ -4,19 +4,41 @@ import { FC } from 'react';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { SlDislike, SlLike } from 'react-icons/sl';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
-import { useAuth } from '../../providers/auth-provider';
-import { IPost } from '../../types/post.types';
 import 'react-photo-view/dist/react-photo-view.css';
+import Keywords from '../../constants/Keywords';
+import { useAuth } from '../../providers/auth-provider';
+import {
+	useAddPostReactionMutation,
+	useRemovePostReactionMutation,
+} from '../../services/mutations/posts.mutations';
+import {
+	usePostReactions,
+	usePostUserReaction,
+} from '../../services/queries/posts.queries';
+import { IPost } from '../../types/post.types';
 
-const Post: FC<IPost> = ({
-	title,
-	description,
-	likes,
-	dislikes,
-	images,
-	user,
-}) => {
+const Post: FC<IPost> = ({ id, title, description, images, user }) => {
 	const { user: currentUser } = useAuth();
+	const { data: reactions } = usePostReactions(id);
+	const { data: userReaction } = usePostUserReaction(id);
+	const { mutate: addReaction } = useAddPostReactionMutation(id);
+	const { mutate: removeReaction } = useRemovePostReactionMutation(id);
+
+	const handleLike = () => {
+		if (userReaction === Keywords.like) {
+			removeReaction();
+		} else {
+			addReaction(Keywords.like);
+		}
+	};
+
+	const handleDislike = () => {
+		if (userReaction === Keywords.dislike) {
+			removeReaction();
+		} else {
+			addReaction(Keywords.dislike);
+		}
+	};
 
 	return (
 		<div className='w-full flex flex-col items-start gap-3'>
@@ -44,12 +66,20 @@ const Post: FC<IPost> = ({
 					</PhotoProvider>
 				</div>
 			</div>
-			<div className='flex items-center '>
-				<Button variant='light' color='primary'>
-					<SlLike className='size-5' /> {likes}
+			<div className='flex items-center gap-2'>
+				<Button
+					onClick={handleLike}
+					variant={userReaction === Keywords.like ? 'flat' : 'light'}
+					color='primary'
+				>
+					<SlLike className='size-5' /> {reactions?.likes || 0}
 				</Button>
-				<Button variant='light' color='danger'>
-					<SlDislike className='size-5' /> {dislikes}
+				<Button
+					onClick={handleDislike}
+					variant={userReaction === Keywords.dislike ? 'flat' : 'light'}
+					color='danger'
+				>
+					<SlDislike className='size-5' /> {reactions?.dislikes || 0}
 				</Button>
 				{currentUser?.id === user.id && (
 					<Button variant='light' color='danger'>

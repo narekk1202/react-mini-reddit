@@ -1,4 +1,6 @@
 export default {
 	signIn: 'signIn',
-	signUp: 'signUp'
-}
+	signUp: 'signUp',
+	like: 'like',
+	dislike: 'dislike',
+};

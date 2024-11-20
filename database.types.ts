@@ -9,34 +9,67 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      post_reactions: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string | null
+          reaction_type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          reaction_type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          reaction_type?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_reactions_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_reactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           created_at: string
           description: string
-          dislikes: number
           id: string
           images: string[] | null
-          likes: number
           title: string
           user_id: string
         }
         Insert: {
           created_at?: string
           description: string
-          dislikes?: number
           id?: string
           images?: string[] | null
-          likes?: number
           title: string
           user_id: string
         }
         Update: {
           created_at?: string
           description?: string
-          dislikes?: number
           id?: string
           images?: string[] | null
-          likes?: number
           title?: string
           user_id?: string
         }
@@ -68,7 +101,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_post_reactions: {
+        Args: {
+          post_id_param: string
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never

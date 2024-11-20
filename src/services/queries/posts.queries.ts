@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import QueryKeys from '../../constants/QueryKeys';
+import ServerErrors from '../../constants/ServerErrors';
+import { useAuth } from '../../providers/auth-provider';
+import { IPost } from '../../types/post.types';
 import supabase from '../../utils/supabase';
-import { IPost } from '../../types/post.types'
 
 export const usePostsQuery = () => {
 	return useQuery({
@@ -24,6 +26,48 @@ export const usePostsQuery = () => {
 			}
 
 			return [];
+		},
+	});
+};
+
+interface Reactions {
+	likes: number;
+	dislikes: number;
+}
+
+export const usePostReactions = (postId: string) => {
+	return useQuery({
+		queryKey: [QueryKeys.postsReactions, postId],
+		queryFn: async (): Promise<Reactions> => {
+			const { data, error } = await supabase.rpc('get_post_reactions', {
+				post_id_param: postId,
+			});
+
+			if (error) throw error;
+			return data as unknown as Reactions;
+		},
+	});
+};
+
+export const usePostUserReaction = (postId: string) => {
+	const { user } = useAuth();
+
+	return useQuery({
+		queryKey: [QueryKeys.postUserReaction, postId],
+		queryFn: async () => {
+			const { data, error } = await supabase
+				.from('post_reactions')
+				.select('reaction_type')
+				.match({ post_id: postId, user_id: user?.id })
+				.single();
+
+			if (error) {
+				if (error.code === ServerErrors.pgrst116) {
+					return null;
+				}
+				throw error;
+			}
+			return data?.reaction_type || null;
 		},
 	});
 };
