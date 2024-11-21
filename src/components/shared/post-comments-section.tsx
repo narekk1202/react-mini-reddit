@@ -1,3 +1,4 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Button } from '@nextui-org/button';
 import { Textarea } from '@nextui-org/input';
 import { Spinner } from '@nextui-org/react';
@@ -17,6 +18,8 @@ const PostCommentsSection = () => {
 		useCreatePostCommentMutation(setComment);
 	const { user } = useAuth();
 
+	const [parent] = useAutoAnimate();
+
 	const handleAddComment = () => {
 		addComment({
 			comment,
@@ -31,8 +34,8 @@ const PostCommentsSection = () => {
 				<Textarea
 					color='primary'
 					placeholder='Add a comment'
-					size='sm'
-					className='rounded-full'
+					className='rounded-full min-h-[10px]'
+					disableAutosize
 					value={comment}
 					onChange={e => setComment(e.target.value)}
 				/>
@@ -48,11 +51,14 @@ const PostCommentsSection = () => {
 				</Button>
 			</div>
 
-			<div className='w-full h-auto flex flex-col items-start gap-5 mt-5'>
+			<div
+				ref={parent}
+				className='w-full h-auto flex flex-col items-start gap-5 mt-5'
+			>
 				{isLoading ? (
 					<Spinner size='lg' />
 				) : comments?.length === 0 ? (
-					<p className='text-md font-semibold'>No comments yet</p>
+					<p className='text-md font-medium'>No comments yet, be the first 😎</p>
 				) : (
 					comments?.map(comment => (
 						<UserComment key={comment.id} comment={comment} />

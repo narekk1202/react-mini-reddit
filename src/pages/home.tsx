@@ -1,3 +1,4 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Button } from '@nextui-org/button';
 import { Spinner, useDisclosure } from '@nextui-org/react';
 import { RiPlayListAddFill } from 'react-icons/ri';
@@ -13,8 +14,8 @@ const Home = () => {
 	const { user } = useAuth();
 	const { data: posts, isLoading } = usePostsQuery();
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
 	const { mutate, isPending } = useCreatePostMutation(onOpenChange);
+	const [parent] = useAutoAnimate();
 
 	const handleOnSubmit = (data: CreatePostValidation) => {
 		const sendData: TablesInsert<'posts'> = {
@@ -40,7 +41,10 @@ const Home = () => {
 				</Button>
 			</div>
 
-			<div className='w-full flex flex-col items-center mt-5 gap-5'>
+			<div
+				ref={parent}
+				className='w-full flex flex-col items-center mt-5 gap-5'
+			>
 				{isLoading ? (
 					<Spinner color='primary' size='lg' />
 				) : posts && posts.length > 0 ? (
