@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import { TablesInsert } from '../../../database.types';
 import QueryKeys from '../../constants/QueryKeys';
 import supabase from '../../utils/supabase';
@@ -29,6 +30,29 @@ export const useCreatePostCommentMutation = (
 				});
 				setComment('');
 			}
+		},
+	});
+};
+
+export const useDeletePostCommentMutation = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (commentId: number) =>
+			supabase.from('post_comments').delete().match({
+				id: commentId,
+			}),
+		onSuccess: async data => {
+			if (data.error) {
+				toast.error(data.error.message);
+				return;
+			}
+
+			await queryClient.invalidateQueries({
+				queryKey: [QueryKeys.postComments],
+			});
+
+			toast.success('Successfully deleted comment');
 		},
 	});
 };
