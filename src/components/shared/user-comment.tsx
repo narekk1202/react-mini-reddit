@@ -42,7 +42,7 @@ const UserComment: FC<Props> = ({ comment, replyRef, setComment }) => {
 				<span className={cn('text-md ml-1')}>
 					{comment.comment?.match(/@(\w+)/) ? (
 						<span className='font-semibold text-primary'>
-							{comment.comment.match(/@(\w+)/)?.[0]}{' '}
+							↳ {comment.comment.match(/@(\w+)/)?.[0]}{' '}
 						</span>
 					) : null}
 

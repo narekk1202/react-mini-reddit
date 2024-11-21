@@ -3,6 +3,7 @@ import { Button } from '@nextui-org/button';
 import { Spinner, useDisclosure } from '@nextui-org/react';
 import { RiPlayListAddFill } from 'react-icons/ri';
 import { TablesInsert } from '../../database.types';
+import FilterButton from '../components/shared/filter-button';
 import CreatePostModal from '../components/shared/modals/create-post-modal';
 import PostCard from '../components/shared/post-card';
 import { useAuth } from '../providers/auth-provider';
@@ -36,9 +37,13 @@ const Home = () => {
 			<div className='w-full flex justify-between items-center'>
 				<p className='font-semibold text-3xl'>Posts</p>
 
-				<Button color='primary' onClick={onOpen}>
-					<RiPlayListAddFill size={20} /> Create Post
-				</Button>
+				<div className='flex items-center gap-2'>
+					<Button color='primary' onClick={onOpen}>
+						<RiPlayListAddFill size={20} /> Create Post
+					</Button>
+
+					<FilterButton />
+				</div>
 			</div>
 
 			<div
