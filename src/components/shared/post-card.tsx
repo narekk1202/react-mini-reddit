@@ -32,6 +32,7 @@ const PostCard: FC<IPost> = ({
 	images,
 	user,
 	total_comments,
+	created_at,
 }) => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const {
@@ -161,6 +162,7 @@ const PostCard: FC<IPost> = ({
 							<MdEdit className='size-5' />
 						</Button>
 					)}
+					<span className='text-[14px] text-gray-500'>{created_at ? new Date(created_at).toLocaleString('hy-AM') : 'Unknown'}</span>
 				</div>
 			</div>
 			<YouSureModal

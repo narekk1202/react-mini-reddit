@@ -4,19 +4,24 @@ import {
 	DropdownItem,
 	DropdownMenu,
 	DropdownTrigger,
+	SharedSelection,
 	type Selection,
 } from '@nextui-org/react';
-import { useMemo, useState } from 'react';
+import { FC } from 'react';
 import { FaFilter } from 'react-icons/fa';
+import FilterKeys from '../../constants/FilterKeys';
 
-const FilterButton = () => {
-	const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set(['all']));
+interface Props {
+	selectedValue: string;
+	selectedKeys: Selection;
+	setSelectedKeys: (keys: SharedSelection) => void;
+}
 
-	const selectedValue = useMemo(
-		() => Array.from(selectedKeys).join(', ').replace('_', ' '),
-		[selectedKeys]
-	);
-
+const FilterButton: FC<Props> = ({
+	selectedKeys,
+	setSelectedKeys,
+	selectedValue,
+}) => {
 	return (
 		<Dropdown>
 			<DropdownTrigger>
@@ -33,11 +38,11 @@ const FilterButton = () => {
 				selectedKeys={selectedKeys}
 				onSelectionChange={setSelectedKeys}
 			>
-				<DropdownItem key='all'>All Posts</DropdownItem>
-				<DropdownItem key='my posts'>My Posts</DropdownItem>
-				<DropdownItem key='likes'>Most liked</DropdownItem>
-				<DropdownItem key='dislikes'>Most disliked</DropdownItem>
-				<DropdownItem key='comments'>Most commented</DropdownItem>
+				<DropdownItem key={FilterKeys.all}>All Posts</DropdownItem>
+				<DropdownItem key={FilterKeys.myPosts}>My Posts</DropdownItem>
+				{/* <DropdownItem key={FilterKeys.likes}>Most liked</DropdownItem> */}
+				{/* <DropdownItem key={FilterKeys.dislikes}>Most disliked</DropdownItem> */}
+				{/* <DropdownItem key={FilterKeys.comments}>Most commented</DropdownItem> */}
 			</DropdownMenu>
 		</Dropdown>
 	);

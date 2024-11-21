@@ -34,7 +34,7 @@ export const usePostQuery = (postId: string, enabled: boolean) => {
 				return { ...data[0], user: userData } as IPost;
 			}
 
-			return {} as IPost
+			return {} as IPost;
 		},
 		enabled,
 	});
@@ -44,7 +44,9 @@ export const usePostsQuery = () => {
 	return useQuery({
 		queryKey: [QueryKeys.posts],
 		queryFn: async () => {
-			const { data: posts, error } = await supabase.from('posts_with_comments_count').select('*');
+			const { data: posts, error } = await supabase
+				.from('posts_with_comments_count')
+				.select('*');
 			const { data: users, error: usersError } = await supabase
 				.from('profiles')
 				.select('*');
