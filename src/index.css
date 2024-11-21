@@ -11,5 +11,5 @@
 }
 
 .auth-container {
-	@apply w-[350px] min-h-[250px] p-5 flex flex-col items-center bg-slate-50 rounded-3xl shadow-sm border-2;
+	@apply w-[350px] min-h-[250px] p-5 flex flex-col items-center bg-slate-50 max-[550px]:bg-white max-[550px]:border-none rounded-3xl shadow-sm border-2;
 }
