@@ -1,4 +1,4 @@
-import { Button, Spinner, useDisclosure, User } from '@nextui-org/react';
+import { Button, cn, Spinner, useDisclosure, User } from '@nextui-org/react';
 import { FC } from 'react';
 import { Tables } from '../../../database.types';
 import { useAuth } from '../../providers/auth-provider';
@@ -7,10 +7,12 @@ import { useGetPostCommentAuthor } from '../../services/queries/comments.queries
 import YouSureModal from './modals/you-sure-modal';
 
 interface Props {
+	replyRef: React.RefObject<HTMLTextAreaElement>;
 	comment: Tables<'post_comments'>;
+	setComment: (val: string) => void;
 }
 
-const UserComment: FC<Props> = ({ comment }) => {
+const UserComment: FC<Props> = ({ comment, replyRef, setComment }) => {
 	const { data: author, isLoading: isAuthorLoading } = useGetPostCommentAuthor(
 		comment.user_id as string,
 		!!comment.user_id
@@ -20,6 +22,11 @@ const UserComment: FC<Props> = ({ comment }) => {
 	const { mutate: deleteComment, isPending } = useDeletePostCommentMutation();
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+	const onClickReply = () => {
+		replyRef.current?.focus();
+		setComment(`@${author?.username} `);
+	};
 
 	return (
 		<>
@@ -32,7 +39,16 @@ const UserComment: FC<Props> = ({ comment }) => {
 						avatarProps={{ src: author?.avatar_url || '' }}
 					/>
 				)}
-				<span className='text-md ml-1'>{comment.comment}</span>
+				<span className={cn('text-md ml-1')}>
+					{comment.comment?.match(/@(\w+)/) ? (
+						<span className='font-semibold text-primary'>
+							{comment.comment.match(/@(\w+)/)?.[0]}{' '}
+						</span>
+					) : null}
+
+					{comment.comment?.replace(/@(\w+)/, '')}
+				</span>
+
 				<div className='flex items-center gap-2'>
 					<span className='text-xs'>
 						{new Date(comment.created_at).toLocaleString('hy-AM')}
@@ -40,11 +56,24 @@ const UserComment: FC<Props> = ({ comment }) => {
 					{currentUser?.id === comment.user_id && (
 						<>
 							<span className='text-xs'>You</span>
-							<Button onClick={onOpen} size='sm' className='rounded-full'>
+							<Button
+								color='danger'
+								onClick={onOpen}
+								size='sm'
+								className='rounded-full'
+							>
 								Delete
 							</Button>
 						</>
 					)}
+					<Button
+						color='primary'
+						onClick={onClickReply}
+						size='sm'
+						className='rounded-full'
+					>
+						Reply
+					</Button>
 				</div>
 			</div>
 			<YouSureModal

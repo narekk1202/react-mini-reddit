@@ -52,8 +52,8 @@ const EditPostModal: FC<Props> = ({
 
 	useEffect(() => {
 		if (post) {
-			setValue('title', post.title);
-			setValue('description', post.description);
+			setValue('title', post.title || '');
+			setValue('description', post.description || '');
 			setValue('images', post.images || []);
 			setImageInputs(post.images || []);
 		}
