@@ -7,8 +7,8 @@ import Urls from '../../constants/Urls';
 import { useAuth } from '../../providers/auth-provider';
 import { useAuthMeQuery } from '../../services/queries/user.queries';
 import { checkImageAvailability } from '../../utils/check-url';
-import YouSureModal from './modals/you-sure-modal';
 import UserEditModal from './modals/user-edit-modal';
+import YouSureModal from './modals/you-sure-modal';
 
 const Header = () => {
 	const { user: currentUser } = useAuth();
@@ -39,7 +39,9 @@ const Header = () => {
 			<header className='w-full h-auto flex items-center justify-between fixed top-0 z-[50] border-b p-3 bg-white'>
 				<Link to={Urls.home} className='w-auto h-auto flex items-center gap-2'>
 					<Image className='size-16' src='/logo.png' alt='logo' />
-					<span className='font-semibold text-xl'>RedditC</span>
+					<span className='font-semibold text-xl max-[550px]:hidden'>
+						RedditC
+					</span>
 				</Link>
 
 				<div className='w-auto flex items-center gap-3'>
@@ -49,6 +51,9 @@ const Header = () => {
 							description={user?.username}
 							avatarProps={{
 								src: isImageAvailable ? user?.avatar_url : undefined,
+							}}
+							classNames={{
+								name: 'max-[550px]:text-[12px]'
 							}}
 						/>
 					) : (

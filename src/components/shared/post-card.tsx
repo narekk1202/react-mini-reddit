@@ -139,13 +139,26 @@ const PostCard: FC<IPost> = ({
 					)}
 
 					{currentUser?.id === user.id && (
-						<Button onClick={onOpen} variant='light' color='danger'>
-							<MdDelete className='size-5' /> Delete
+						<Button
+							isIconOnly
+							radius='full'
+							onClick={onOpen}
+							variant='light'
+							color='danger'
+							className='ml-2'
+						>
+							<MdDelete className='size-5' />
 						</Button>
 					)}
 					{currentUser?.id === user.id && (
-						<Button onClick={onOpenEdit} variant='light' color='warning'>
-							<MdEdit className='size-5' /> Edit
+						<Button
+							isIconOnly
+							radius='full'
+							onClick={onOpenEdit}
+							variant='light'
+							color='warning'
+						>
+							<MdEdit className='size-5' />
 						</Button>
 					)}
 				</div>

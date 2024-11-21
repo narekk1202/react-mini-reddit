@@ -1,6 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Button } from '@nextui-org/button';
-import { Spinner } from '@nextui-org/react';
+import { Divider, Spinner } from '@nextui-org/react';
 import { GoArrowLeft } from 'react-icons/go';
 import { useNavigate, useParams } from 'react-router-dom';
 import PostCard from '../components/shared/post-card';
@@ -31,6 +31,7 @@ const Post = () => {
 				className='w-full h-auto flex flex-col items-center mt-5 px-5'
 			>
 				{isLoading || !data ? <Spinner size='lg' /> : <PostCard {...data} />}
+				<Divider className='mt-5' />
 
 				{!isLoading && data && <PostCommentsSection />}
 			</div>

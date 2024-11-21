@@ -1,12 +1,11 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { Button } from '@nextui-org/button';
-import { Textarea } from '@nextui-org/input';
 import { Spinner } from '@nextui-org/react';
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../providers/auth-provider';
 import { useCreatePostCommentMutation } from '../../services/mutations/comments.mutations';
 import { useGetPostComments } from '../../services/queries/comments.queries';
+import CommentsTextArea from './comments-textarea';
 import UserComment from './user-comment';
 
 const PostCommentsSection = () => {
@@ -30,37 +29,14 @@ const PostCommentsSection = () => {
 	};
 
 	return (
-		<div className='mt-5 w-full h-auto flex flex-col items-start gap-3 bg-slate-50 p-3 rounded-xl'>
-			<div className='w-full flex items-center gap-2'>
-				<Textarea
-					ref={replyRef}
-					color='primary'
-					placeholder='Add a comment'
-					className='rounded-full min-h-[10px]'
-					onKeyDown={e => {
-						if (
-							e.key === 'Backspace' &&
-							comment.startsWith('@') &&
-							comment.endsWith(' ')
-						) {
-							setComment('');
-						}
-					}}
-					disableAutosize
-					value={comment}
-					onChange={e => setComment(e.target.value)}
-				/>
-				<Button
-					isDisabled={!comment}
-					onClick={handleAddComment}
-					isLoading={isPending}
-					color='primary'
-					className='rounded-full'
-					size='lg'
-				>
-					Post
-				</Button>
-			</div>
+		<div className='mt-10 w-full h-auto flex flex-col items-start gap-3 bg-slate-50 p-3 rounded-xl'>
+			<CommentsTextArea
+				comment={comment}
+				replyRef={replyRef}
+				isPending={isPending}
+				setComment={setComment}
+				handleAddComment={handleAddComment}
+			/>
 
 			<div
 				ref={parent}
