@@ -1,5 +1,5 @@
 import { Button } from '@nextui-org/button';
-import { useDisclosure, User } from '@nextui-org/react';
+import { Badge, useDisclosure, User } from '@nextui-org/react';
 import { FC } from 'react';
 import { FaRegComments } from 'react-icons/fa';
 import { MdDelete, MdEdit } from 'react-icons/md';
@@ -25,7 +25,14 @@ import { IPost } from '../../types/post.types';
 import EditPostModal from './modals/edit-post-modal';
 import YouSureModal from './modals/you-sure-modal';
 
-const PostCard: FC<IPost> = ({ id, title, description, images, user }) => {
+const PostCard: FC<IPost> = ({
+	id,
+	title,
+	description,
+	images,
+	user,
+	total_comments,
+}) => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const {
 		isOpen: isOpenEdit,
@@ -34,10 +41,12 @@ const PostCard: FC<IPost> = ({ id, title, description, images, user }) => {
 	} = useDisclosure();
 
 	const { user: currentUser } = useAuth();
-	const { data: reactions } = usePostReactions(id);
-	const { data: userReaction } = usePostUserReaction(id);
-	const { mutate: addReaction } = useAddPostReactionMutation(id);
-	const { mutate: removeReaction } = useRemovePostReactionMutation(id);
+	const { data: reactions } = usePostReactions(id as string);
+	const { data: userReaction } = usePostUserReaction(id as string);
+	const { mutate: addReaction } = useAddPostReactionMutation(id as string);
+	const { mutate: removeReaction } = useRemovePostReactionMutation(
+		id as string
+	);
 	const { mutate: deletePost, isPending } = useDeletePostMutation(onOpenChange);
 	const { mutate: updatePost, isPending: isPendingUpdate } =
 		useUpdatePostMutation(onOpenChangeEdit);
@@ -62,7 +71,11 @@ const PostCard: FC<IPost> = ({ id, title, description, images, user }) => {
 	};
 
 	const handleOnUpdate = (data: CreatePostValidation) => {
-		updatePost({ ...data, user_id: currentUser?.id as string, id });
+		updatePost({
+			...data,
+			user_id: currentUser?.id as string,
+			id: id as string,
+		});
 	};
 
 	return (
@@ -112,13 +125,19 @@ const PostCard: FC<IPost> = ({ id, title, description, images, user }) => {
 						<SlDislike className='size-5' /> {reactions?.dislikes || 0}
 					</Button>
 					{location.pathname === Urls.home && (
-						<Button
-							onClick={() => navigate(Urls.post.replace(':id', id))}
-							variant='light'
-						>
-							<FaRegComments className='size-5 text-slate-500' />
-						</Button>
+						<Badge content={total_comments} shape='circle' color='danger'>
+							<Button
+								onClick={() => navigate(Urls.post.replace(':id', id as string))}
+								radius='full'
+								isIconOnly
+								aria-label={`more than ${total_comments} comments`}
+								variant='light'
+							>
+								<FaRegComments className='size-5 text-slate-500' />
+							</Button>
+						</Badge>
 					)}
+
 					{currentUser?.id === user.id && (
 						<Button onClick={onOpen} variant='light' color='danger'>
 							<MdDelete className='size-5' /> Delete
@@ -134,7 +153,7 @@ const PostCard: FC<IPost> = ({ id, title, description, images, user }) => {
 			<YouSureModal
 				isOpen={isOpen}
 				onOpenChange={onOpenChange}
-				onClick={() => deletePost(id)}
+				onClick={() => deletePost(id as string)}
 				loading={isPending}
 				title='Delete post'
 				body='Are you sure you want to delete this post? This action cannot be undone.'
@@ -143,7 +162,7 @@ const PostCard: FC<IPost> = ({ id, title, description, images, user }) => {
 			<EditPostModal
 				isPending={isPendingUpdate}
 				handleOnSubmit={handleOnUpdate}
-				postId={id}
+				postId={id as string}
 				isOpen={isOpenEdit}
 				onOpenChange={onOpenChangeEdit}
 			/>

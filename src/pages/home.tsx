@@ -10,9 +10,9 @@ import { useCreatePostMutation } from '../services/mutations/posts.mutations';
 import { usePostsQuery } from '../services/queries/posts.queries';
 
 const Home = () => {
+	const { user } = useAuth();
 	const { data: posts, isLoading } = usePostsQuery();
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
-	const { user } = useAuth();
 
 	const { mutate, isPending } = useCreatePostMutation(onOpenChange);
 

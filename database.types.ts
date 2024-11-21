@@ -40,6 +40,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts_with_comments_count"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "post_comments_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -76,6 +83,13 @@ export type Database = {
             columns: ["post_id"]
             isOneToOne: false
             referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_reactions_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts_with_comments_count"
             referencedColumns: ["id"]
           },
           {
@@ -137,7 +151,18 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      posts_with_comments_count: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string | null
+          images: string[] | null
+          title: string | null
+          total_comments: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_post_reactions: {
