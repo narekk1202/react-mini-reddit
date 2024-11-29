@@ -89,10 +89,26 @@ export const useDeletePostMutation = (
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: async (postId: string) =>
-			supabase.from('posts').delete().match({
+		mutationFn: async (postId: string) => {
+			const { error: commentsError } = await supabase
+				.from('post_comments')
+				.delete()
+				.match({
+					post_id: postId,
+				});
+
+			if (commentsError) throw commentsError;
+
+			const { error } = await supabase.from('post_reactions').delete().match({
+				post_id: postId,
+			});
+
+			if (error) throw error;
+
+			return supabase.from('posts').delete().match({
 				id: postId,
-			}),
+			});
+		},
 		onSuccess: data => {
 			if (data.error) {
 				toast.error(data.error.message);
